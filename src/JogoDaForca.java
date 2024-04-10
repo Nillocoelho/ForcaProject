@@ -1,15 +1,15 @@
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class JogoDaForca {
-    private ArrayList<String> palavras = new ArrayList();
+    private ArrayList<String> palavras = new ArrayList<>();
     private ArrayList<String> dicas = new ArrayList<>();
-    private int tentativa;
     private String palavraEscolhida;
-    private ArrayList<String> palavraAdivinhada = new ArrayList<>();
+    private String[] palavraAdivinhada;
     private String dicaEscolhida;
     private int penalidades;
     private int acertos;
@@ -28,66 +28,63 @@ public class JogoDaForca {
             }
 
             arquivo.close();
-            System.out.println(this.palavras);
-            System.out.println(this.dicas);
 
         }
     }
     public void iniciar() {
-        this.tentativa = 0;
         this.acertos = 0;
         this.penalidades = 0;
         Random random = new Random();
-        int n = random.nextInt( 10);
+        int n = random.nextInt(10);
         this.palavraEscolhida = this.palavras.get(n).toLowerCase();
         this.dicaEscolhida = this.dicas.get(n);
-        this.palavraAdivinhada.clear();
+        this.palavraAdivinhada = new String[this.palavraEscolhida.length()];
+        Arrays.fill(this.palavraAdivinhada, "*");
     }
     public String getDica() { return this.dicaEscolhida; };
-    public int getTamanho() {
-        return this.palavraEscolhida.length();
-    };
+    public int getTamanho() { return this.palavraEscolhida.length(); };
 
     public ArrayList<Integer> getOcorrencias(String letra) throws Exception {
-        ArrayList<Integer> o = new ArrayList<>();
+        ArrayList<Integer> o = new ArrayList<>(this.palavraEscolhida.length());
         String p = this.palavraEscolhida.toLowerCase();
+        String s = this.getPalavraAdivinhada();
 
         if (letra.isEmpty()){
-            throw new Exception("Insira uma letra válida.");
+            throw new Exception("Insira uma letra.");
         }
-        else if (letra.length() > 2) {
+        else if (letra.length() >= 2) {
             throw new Exception("Insira apenas uma letra.");
         }
-        else if (this.palavraAdivinhada.contains(letra)) {
-            throw new Exception("Insira uma letra que ainda não foi escolhida.");
+        else if (s.contains(letra)){
+            throw new Exception("Você já digitou a letra" + " " + letra.toUpperCase());
         }
         else {
+            int c = 0;
             for (int n = 0; n < p.length(); n++) {
-                if (p.substring(n).equalsIgnoreCase(letra)) {
-                    this.palavraAdivinhada.add(n, letra);
+                if (p.substring(n, n+1).equalsIgnoreCase(letra)) {
+                    this.palavraAdivinhada[n] = letra;
                     o.add(n+1);
                     this.acertos += 1;
-                } else {
-                    this.penalidades += 1;
+                    c += 1;
                 }
             }
-        }
 
-        return o;
+            if (c == 0) {
+                this.penalidades += 1;
+            }
+            return o;
+        }
     }
 
     public boolean terminou() {
-        return (this.palavraEscolhida.equalsIgnoreCase(this.getPalavraAdivinhada())) || (this.tentativa == 6);
+        return (this.palavraEscolhida.equalsIgnoreCase(this.getPalavraAdivinhada())) || (this.penalidades == 6);
     }
     public String getPalavraAdivinhada() {
-        StringBuilder r = new StringBuilder();
+        String r = "";
         for (String item : this.palavraAdivinhada) {
-            if (item.isEmpty()) {
-                r.append("*");
-            }
-            r.append(item);
+            r+=(item);
         }
-        return r.toString();
+        return r;
     }
 
     public int getAcertos()  { return this.acertos; }
@@ -96,15 +93,17 @@ public class JogoDaForca {
 
     public String getNomePenalidade() {
         String p = "";
-        if (this.tentativa == 1) {
+        if (this.penalidades == 0)  {
+            p = "Sem penalidades.";
+        } else if (this.penalidades == 1) {
             p = "Apareceu a cabeça.";
-        } else if (this.tentativa == 2) {
+        } else if (this.penalidades == 2) {
             p = "Apareceu o tronco.";
-        } else if (this.tentativa == 3) {
+        } else if (this.penalidades == 3) {
             p = "Apareceu o primeiro braço.";
-        } else if (this.tentativa == 4) {
+        } else if (this.penalidades == 4) {
             p = "Apareceu o segundo braço.";
-        } else if (this.tentativa == 5) {
+        } else if (this.penalidades == 5) {
             p = "Apareceu primeira perna.";
         } else {
             p = "Apareceu segunda perna.";
