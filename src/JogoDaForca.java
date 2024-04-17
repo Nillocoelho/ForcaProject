@@ -118,4 +118,7 @@ public class JogoDaForca {
             return this.palavraEscolhida.equalsIgnoreCase(this.getPalavraAdivinhada()) ? "Você venceu" : "Você foi enforcado!";
         }
     }
+    public String getPalavra() {
+    	return this.palavraEscolhida;
+    }
 }
