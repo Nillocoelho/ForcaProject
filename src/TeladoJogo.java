@@ -36,7 +36,7 @@ public class TeladoJogo {
 	private JLabel label_8;
 	private JogoDaForca jogo;
 	private int contador;
-	private int start;
+	private int contagem;
 	private JLabel label_9;
 	/**
 	 * Launch the application.
@@ -88,8 +88,8 @@ public class TeladoJogo {
 				label_5.setText(jogo.getPalavraAdivinhada());
 				label_6.setIcon(new ImageIcon(TeladoJogo.class.getResource("/imagens/6.png")));
 				label_8.setText("0");
-				start ++;
-				
+				contagem = 0;
+				button_1.setEnabled(true);
 			}
 		});
 		button.setBounds(223, 199, 89, 23);
@@ -100,24 +100,7 @@ public class TeladoJogo {
 		textField.setBounds(89, 88, 68, 23);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
-		textField.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                updateButtonState();
-            }
 
-            public void removeUpdate(DocumentEvent e) {
-                updateButtonState();
-            }
-
-            public void insertUpdate(DocumentEvent e) {
-                updateButtonState();
-            }
-
-            private void updateButtonState() {
-                // Habilita o botão se o texto do campo não estiver vazio
-                button_1.setEnabled(!textField.getText().isEmpty());
-            }
-        });
 
 		
 		label = new JLabel("Letra:");
@@ -138,12 +121,10 @@ public class TeladoJogo {
 		button_1.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (start != 0) {
-					if (contador > 0) {
+				if (contador > 0) {
 						String texto = textField.getText();
 						if (texto.length() == 1) {
 							letras.add(texto);
-							if(texto != jogo.getPalavraAdivinhada()){
 								try {
 									ArrayList<Integer> ocorrencias = jogo.getOcorrencias(texto);
 									if (!ocorrencias.isEmpty()) {
@@ -151,10 +132,10 @@ public class TeladoJogo {
 										label_5.setText(jogo.getPalavraAdivinhada());
 									}
 									else {
-										start++;
+										contagem++;
 										label_9.setText("voce errou a letra = " +  " " + texto);
-										label_8.setText("" + start);
-										switch (start) {
+										label_8.setText("" + contagem);
+										switch (contagem) {
 										case 1:
 											label_6.setIcon(new ImageIcon(TeladoJogo.class.getResource("/imagens/5.png")));
 											break;
@@ -179,14 +160,9 @@ public class TeladoJogo {
 										}
 									}
 								} catch (Exception ex) {
-									ex.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Você já adicionou essa letra antes", "Alerta", JOptionPane.WARNING_MESSAGE);
 								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "Você já adicionou essa letra antes", "Alerta", JOptionPane.WARNING_MESSAGE);
-							}
 						}
-					}
 					else {
 						JOptionPane.showMessageDialog(null, "Você adicionou mais de uma letra", "Alerta", JOptionPane.WARNING_MESSAGE);
 					}
@@ -194,7 +170,7 @@ public class TeladoJogo {
 				else {
 					JOptionPane.showMessageDialog(null, "Você não iniciou um jogo!", "Alerta", JOptionPane.WARNING_MESSAGE);
 				}
-			}
+		}
 		});
 
 		button_1.setBounds(176, 88, 89, 23);
