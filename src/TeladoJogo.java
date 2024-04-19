@@ -35,9 +35,9 @@ public class TeladoJogo {
 	private JLabel label_7;
 	private JLabel label_8;
 	private JogoDaForca jogo;
-	private int contador;
 	private int contagem;
 	private JLabel label_9;
+	private int summ;
 	/**
 	 * Launch the application.
 	 */
@@ -77,7 +77,6 @@ public class TeladoJogo {
 		button.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contador++;
 				try {
 					jogo = new JogoDaForca();
 				} catch (Exception e1) {
@@ -89,6 +88,7 @@ public class TeladoJogo {
 				label_6.setIcon(new ImageIcon(TeladoJogo.class.getResource("/imagens/6.png")));
 				label_8.setText("0");
 				contagem = 0;
+				summ = 0;
 				button_1.setEnabled(true);
 			}
 		});
@@ -121,7 +121,6 @@ public class TeladoJogo {
 		button_1.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (contador > 0) {
 						String texto = textField.getText();
 						if (texto.length() == 1) {
 							letras.add(texto);
@@ -130,6 +129,7 @@ public class TeladoJogo {
 									if (!ocorrencias.isEmpty()) {
 										label_9.setText("voce acertou a letra =" + " " + texto);
 										label_5.setText(jogo.getPalavraAdivinhada());
+										summ++;
 									}
 									else {
 										contagem++;
@@ -166,10 +166,9 @@ public class TeladoJogo {
 					else {
 						JOptionPane.showMessageDialog(null, "Você adicionou mais de uma letra", "Alerta", JOptionPane.WARNING_MESSAGE);
 					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Você não iniciou um jogo!", "Alerta", JOptionPane.WARNING_MESSAGE);
-				}
+					if(summ == jogo.getTamanho()){
+						JOptionPane.showMessageDialog(null, "Você ganhou!!!", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+					}
 		}
 		});
 
