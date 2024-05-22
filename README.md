@@ -6,7 +6,7 @@
 > Projeto de jogo da forca dedicado à diciplina de POO.
 
 ## 📸 Layout
-<img src="imagem.png" alt="Exemplo imagem">
+<img src="layout.jpeg" alt="Layout do jogo">
 
 ## 🛠️ Techs
 <div>
