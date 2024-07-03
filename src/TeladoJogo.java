@@ -169,6 +169,7 @@ public class TeladoJogo {
 					if(summ == jogo.getTamanho()){
 						JOptionPane.showMessageDialog(null, "Você ganhou!!!", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 					}
+					textField.setText(null);
 		}
 		});
 
