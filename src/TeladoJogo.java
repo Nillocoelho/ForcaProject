@@ -37,7 +37,6 @@ public class TeladoJogo {
 	private JogoDaForca jogo;
 	private int contagem;
 	private JLabel label_9;
-	private int summ;
 	/**
 	 * Launch the application.
 	 */
@@ -88,7 +87,6 @@ public class TeladoJogo {
 				label_6.setIcon(new ImageIcon(TeladoJogo.class.getResource("/imagens/6.png")));
 				label_8.setText("0");
 				contagem = 0;
-				summ = 0;
 				button_1.setEnabled(true);
 			}
 		});
@@ -129,7 +127,6 @@ public class TeladoJogo {
 									if (!ocorrencias.isEmpty()) {
 										label_9.setText("voce acertou a letra =" + " " + texto);
 										label_5.setText(jogo.getPalavraAdivinhada());
-										summ++;
 									}
 									else {
 										contagem++;
@@ -166,7 +163,7 @@ public class TeladoJogo {
 					else {
 						JOptionPane.showMessageDialog(null, "Você adicionou mais de uma letra", "Alerta", JOptionPane.WARNING_MESSAGE);
 					}
-					if(summ == jogo.getTamanho()){
+					if(jogo.getPalavraAdivinhada().equals(jogo.getPalavra())){
 						JOptionPane.showMessageDialog(null, "Você ganhou!!!", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 					}
 					textField.setText(null);
